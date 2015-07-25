@@ -1,0 +1,11 @@
+[perf-fio]
+direct=1 
+ioengine=libaio 
+randrepeat=0 
+norandommap 
+ramp_time=300 
+runtime=300
+time_based 
+numjobs=1 
+iodepth=64 
+filesize=10g
