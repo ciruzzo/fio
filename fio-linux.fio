@@ -1,0 +1,19 @@
+mkdir -p fio-data
+touch fio-data/test
+
+for t in read write 
+do
+echo $t
+fio --output=result-linux-$t.txt --filename=fio-data/test --name=fio-linux-$t --readwrite=$t  --bs=1m linux.fio
+done
+
+for t in randread randwrite 
+do
+echo $t
+	for b in 4k 16k 64k
+	do
+	fio --output=result-linux-$t-$b.txt --filename=fio-data/test --name=fio-linux-$t-$b --readwrite=$t --bs=$b linux.fio
+	done
+
+done
+
