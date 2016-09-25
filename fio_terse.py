@@ -16,40 +16,30 @@ import csv
 import sys
 
 def int_float(s):
-	if s.find('.') >= 0:
-		try:
-			f = float(s)
-			if f == 0:	# remove extra 0s
-				s = '0'
-			else:
-				s = str(f)
-		except:
-			pass
+	try:
+		f = float(s)
+		if int(f) == f:
+			f = int(f)
+		s = str(f)
+	except:
+		pass
 	return s
-	
-# with open('fio_output.txt', 'rb') as csvfile:
-def main():
+
+def clean():
 	numdisk=0
 	field=field1+field2*2+field3+dsk*numdisk
-	read = write = False
-	if len(sys.argv) > 1:
-		# read-only and write-only, otherwise read & write
-		if sys.argv[1] == 'read': read = True
-		elif sys.argv[1] == 'write': write = True
 
 	buf = []
-	rd = csv.reader(iter(sys.stdin.readline, ''), delimiter=';')
-	for row in rd:
+	for row in csv.reader(iter(sys.stdin.readline, ''), delimiter=';'):
 		for i,(f,c) in enumerate(zip(field, row)):
-			#skip write info if read-only and skip read if write-only
-			if write and i>=5 and i<46: continue
-			if read and i>=46 and i<87: continue
 			# remove % and something before '='
-			v = c[c.find('=')+1:].rstrip('%')
-			v = int_float(v)
+			v = int_float(c[c.find('=')+1:].rstrip('%'))
 			buf.append(v)
-			print "%d %s:\t%s" % (i, f, v)
-#	print "@", len(row), len(field)
+#			print "%d %s:\t%s" % (i, f, v)
+	return buf
+
+def main():
+	buf = clean()
 	print ','.join(buf)
 
 main()
